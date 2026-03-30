@@ -1183,7 +1183,12 @@ function afterCollect(item,peg,slotIdx,path,pegIdx,removed,kept,shape){
   convAnim={color:item.color,...path[pegIdx]};
   let step=0;
   function goBack(){
-    if(step>=seg.length){convAnim=null;finishConveyer(item,slotIdx);return;}
+    if(step>=seg.length){
+      convAnim=null;
+      conveying=false;
+      finishConveyer(item,slotIdx);
+      return;
+    }
     Object.assign(convAnim,path[seg[step]]);drawPlay();step++;
     setTimeout(goBack,9);
   }
@@ -1199,10 +1204,8 @@ function finishConveyer(item,slotIdx){
   }else{
     setPlaySt(`↩️ ${item.color.toUpperCase()} döndü (${item.filled}/${item.capacity})`);
   }
-  conveying=false;drawPlay();renderQueue();checkWin();
-
-  // Re-check pegs (kalan shape hala peg üzerinde olabilir)
-  setTimeout(()=>{checkPegs();tryConveyer();},300);
+  drawPlay();renderQueue();checkWin();
+  setTimeout(()=>{checkPegs();setTimeout(tryConveyer,100);},400);
 }
 
 function checkWin(){
