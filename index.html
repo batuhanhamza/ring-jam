@@ -986,7 +986,7 @@ document.addEventListener('touchmove',e=>{
   onDragMove(e.touches[0].clientX,e.touches[0].clientY);
 },{passive:false});
 
-const AXIS_DEAD=2,AXIS_SWITCH=4; // px thresholds
+const AXIS_DEAD=2, AXIS_SWITCH=12; // px thresholds
 
 function onDragMove(cx,cy){
   const{px,py}=pxToPlayPx(cx,cy);
