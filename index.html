@@ -1151,6 +1151,7 @@ function doCollect(item,peg,slotIdx,path,pegIdx){
   let ri=0;
   function removeNext(){
     if(ri>=toRemove.length){afterCollect(item,peg,slotIdx,path,pegIdx,toRemove,toKeep,shape);return;}
+    console.log('removeNext ri=',ri,'conveying=',conveying);
     const{x:px,y:py}=cellXYP(peg.boardR,peg.boardC);
     convAnim={color:item.color,x:px+PC/2,y:py+PC/2};
     const{r,c}=toRemove[ri];
