@@ -676,7 +676,7 @@ function exportLevel(){
   const data={
     n:edN,
     slotCount:parseInt(document.getElementById('slot-count').value)||2,
-    shapes:edShapes.map(s=>({color:s.color,cells:s.cells,holeR:s.holeR,holeC:s.holeC})),
+    shapes:edShapes.map(s=>({color:s.color,cells:s.cells,holes:s.holes||[]})),
     pegs:edPegs,
     slots:edSlots.map(s=>({items:s.items})),
   };
