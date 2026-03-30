@@ -946,6 +946,7 @@ function commitSlide(shape){
   drag.baseCells=shape.cells.map(c=>({...c}));
   drag.baseHoles=shape.holes.map(h=>({...h}));
   drag.slide=0;
+  drag.range=null;
 }
 
 const pCv=document.getElementById('play-canvas');
@@ -986,7 +987,7 @@ document.addEventListener('touchmove',e=>{
   onDragMove(e.touches[0].clientX,e.touches[0].clientY);
 },{passive:false});
 
-const AXIS_DEAD=2, AXIS_SWITCH=12; // px thresholds
+const AXIS_DEAD=2, AXIS_SWITCH=18; // px thresholds
 
 function onDragMove(cx,cy){
   const{px,py}=pxToPlayPx(cx,cy);
