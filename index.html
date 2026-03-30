@@ -1184,7 +1184,8 @@ function afterCollect(item,peg,slotIdx,path,pegIdx,removed,kept,shape){
   const seg=[];let i=pegIdx;
   while(true){seg.push(i);if(i===exitIdx)break;i=(i+1)%pLen;if(seg.length>pLen+5)break;}
 
-  convAnim={color:item.color,...path[pegIdx]};
+  const{x:pgx,y:pgy}=cellXYP(peg.boardR,peg.boardC);
+  convAnim={color:item.color,x:pgx+PC/2,y:pgy+PC/2};
   let step=0;
   function goBack(){
     if(step>=seg.length){
