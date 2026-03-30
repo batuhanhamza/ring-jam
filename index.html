@@ -1114,7 +1114,7 @@ function animateConveyer(item,peg,slotIdx){
   convAnim={color:item.color,...path[entryIdx]};
   let step=0;
   function go(){
-    if(step>=seg.length){convAnim=null;doCollect(item,peg,slotIdx,path,pegIdx);return;}
+    if(step>=seg.length){doCollect(item,peg,slotIdx,path,pegIdx);return;}
     Object.assign(convAnim,path[seg[step]]);drawPlay();step++;
     setTimeout(go,9);
   }
@@ -1142,6 +1142,8 @@ function doCollect(item,peg,slotIdx,path,pegIdx){
   function removeNext(){
     if(ri>=toRemove.length){afterCollect(item,peg,slotIdx,path,pegIdx,toRemove,toKeep,shape);return;}
     const{r,c}=toRemove[ri];
+    const{x:px,y:py}=cellXYP(peg.boardR,peg.boardC);
+    convAnim={color:item.color,x:px+PC/2,y:py+PC/2};
     playGrid[r][c]=null;
     shape.cells=shape.cells.filter(cc=>!(cc.r===r&&cc.c===c));
     item.filled++;renderQueue();drawPlay();ri++;
@@ -1156,6 +1158,8 @@ function afterCollect(item,peg,slotIdx,path,pegIdx,removed,kept,shape){
     shape.collected=true;shape.cells=[];
   }else{
     shape.cells=kept.map(({r,c})=>({r,c}));
+    const keptSet=new Set(kept.map(({r,c})=>`${r},${c}`));
+    shape.holes=(shape.holes||[]).filter(h=>keptSet.has(`${h.r},${h.c}`));
     shape.cells.forEach(({r,c})=>{playGrid[r][c]=shape.id;});
   }
   setPlaySt(`📦 ${removed.length} hücre toplandı (${item.filled}/${item.capacity})`);
