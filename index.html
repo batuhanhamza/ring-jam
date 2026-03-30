@@ -1094,7 +1094,11 @@ function tryConveyer(){
     const active=slot.queue.find(q=>q.state==='active');
     if(!active)continue;
     const peg=playPegs.find(p=>p.color===active.color&&p.shapeId!==null);
-    if(peg){animateConveyer(active,peg,si);return;}
+    if(peg){
+      conveying=true;  // ← buraya taşı
+      animateConveyer(active,peg,si);
+      return;
+    }
   }
 }
 
