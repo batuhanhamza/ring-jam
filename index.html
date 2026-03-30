@@ -1114,7 +1114,12 @@ function animateConveyer(item,peg,slotIdx){
   convAnim={color:item.color,...path[entryIdx]};
   let step=0;
   function go(){
-    if(step>=seg.length){doCollect(item,peg,slotIdx,path,pegIdx);return;}
+    if(step>=seg.length){
+      Object.assign(convAnim,path[seg[seg.length-1]]);
+      drawPlay();
+      setTimeout(()=>doCollect(item,peg,slotIdx,path,pegIdx),9);
+      return;
+    }
     Object.assign(convAnim,path[seg[step]]);drawPlay();step++;
     setTimeout(go,9);
   }
