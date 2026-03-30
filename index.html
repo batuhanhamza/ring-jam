@@ -760,7 +760,7 @@ function initPlay(){
   playShapes=edShapes.map(s=>({
     id:s.id,color:s.color,
     cells:s.cells.map(c=>({...c})),
-    holeR:s.holeR,holeC:s.holeC,
+    holes:(s.holes||[]).map(h=>({...h})),
     collected:false,
   }));
   playShapes.forEach(s=>s.cells.forEach(({r,c})=>{playGrid[r][c]=s.id;}));
@@ -936,14 +936,15 @@ function commitSlide(shape){
   shape.cells.forEach(({r,c})=>{if(playGrid[r]?.[c]===shape.id)playGrid[r][c]=null;});
   const valid=newCells.every(({r,c})=>r>=0&&r<playN&&c>=0&&c<playN&&playGrid[r][c]===null);
   shape.cells=valid?newCells:drag.baseCells.map(c=>({...c}));
-  shape.holeR=valid?newHR:drag.baseHR;
-  shape.holeC=valid?newHC:drag.baseHC;
+  const baseHoles=drag.baseHoles||[];
+  shape.holes=valid
+    ? baseHoles.map(h=>drag.axis==='h'?{r:h.r,c:h.c+snap}:{r:h.r+snap,c:h.c})
+    : baseHoles.map(h=>({...h}));
   shape.cells.forEach(({r,c})=>{playGrid[r][c]=shape.id;});
 
   // Update drag base for next segment
   drag.baseCells=shape.cells.map(c=>({...c}));
-  drag.baseHR=shape.holeR;
-  drag.baseHC=shape.holeC;
+  drag.baseHoles=shape.holes.map(h=>({...h}));
   drag.slide=0;
 }
 
@@ -970,7 +971,7 @@ function startDrag(id,px,py){
   drag={
     shapeId:id,shape,
     baseCells:shape.cells.map(c=>({...c})),
-    baseHR:shape.holeR,baseHC:shape.holeC,
+    baseHoles:(shape.holes||[]).map(h=>({...h})),
     startPx:px,startPy:py,
     axis:null,range:null,slide:0,
     lastAxis:null,
@@ -1028,8 +1029,9 @@ function onDragMove(cx,cy){
   // Visual update
   drag.shape.cells.forEach(({r,c})=>{if(playGrid[r]?.[c]===drag.shapeId)playGrid[r][c]=null;});
   drag.shape.cells=drag.baseCells.map(({r,c})=>drag.axis==='h'?{r,c:c+snap}:{r:r+snap,c});
-  drag.shape.holeR=drag.axis==='h'?drag.baseHR:drag.baseHR+snap;
-  drag.shape.holeC=drag.axis==='h'?drag.baseHC+snap:drag.baseHC;
+  drag.shape.holes=(drag.baseHoles||[]).map(h=>
+    drag.axis==='h'?{r:h.r,c:h.c+snap}:{r:h.r+snap,c:h.c}
+  );
   drag.shape.cells.forEach(({r,c})=>{if(r>=0&&r<playN&&c>=0&&c<playN)playGrid[r][c]=drag.shapeId;});
 
   drawPlay();
