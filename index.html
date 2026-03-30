@@ -832,6 +832,7 @@ function drawPlay(){
 
   // Conveyer item
   if(convAnim){
+    console.log('convAnim:', convAnim.x, convAnim.y);
     const col=COLORS[convAnim.color];
     ctx.fillStyle=col.dim;ctx.strokeStyle=col.css;ctx.lineWidth=2;
     ctx.shadowColor=col.css;ctx.shadowBlur=12;
