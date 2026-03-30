@@ -316,8 +316,7 @@ const DEFAULT_LEVEL={
           "c": 4
         }
       ],
-      "holeR": 0,
-      "holeC": 3
+      "holes": [{"r":0,"c":3}]
     },
     {
       "color": "yellow",
@@ -884,14 +883,14 @@ function drawShapes(ctx,shapes,xyFn,cell,gap,isDraggingFn){
     });
 
     // Hole icon
-    if(shape.holeR!==undefined){
-      const{x,y}=xyFn(shape.holeR,shape.holeC);
+    (shape.holes||[]).forEach(h=>{
+      const{x,y}=xyFn(h.r,h.c);
       const cx=x+cell/2,cy=y+cell/2;
       ctx.shadowColor=col.css;ctx.shadowBlur=8;
       ctx.strokeStyle=col.css;ctx.lineWidth=3;ctx.fillStyle='rgba(0,0,0,.55)';
       ctx.beginPath();ctx.arc(cx,cy,11,0,Math.PI*2);ctx.fill();ctx.stroke();
       ctx.shadowBlur=0;
-    }
+    });
   });
 }
 
@@ -911,7 +910,7 @@ edCv.addEventListener('click',e=>{
     const nc=cells.map(([dr,dc])=>({r:r+dr,c:c+dc}));
     if(nc.some(({r:nr,c:ncol})=>nr<0||nr>=edN||ncol<0||ncol>=edN)){setEdSt('Board dışına taşıyor!');return;}
     if(nc.some(({r:nr,c:ncol})=>edShapes.some(s=>s.cells.some(cc=>cc.r===nr&&cc.c===ncol)))){setEdSt('Hücre dolu!');return;}
-    edShapes.push({id:edNextId++,color:edColor,cells:nc,holeR:undefined,holeC:undefined});
+    edShapes.push({id:edNextId++,color:edColor,cells:nc,holes:[]});
     setEdSt(`${edShapeKey} (${edColor}) yerleştirildi`);
 
   }else if(edMode==='peg'){
@@ -923,7 +922,10 @@ edCv.addEventListener('click',e=>{
   }else if(edMode==='hole'){
     const s=edShapes.find(s=>s.cells.some(cc=>cc.r===r&&cc.c===c));
     if(!s){setEdSt('Shape hücresi seç!');return;}
-    s.holeR=r;s.holeC=c;setEdSt(`Hole (${r},${c})`);
+    if(!s.holes)s.holes=[];
+    const hidx=s.holes.findIndex(h=>h.r===r&&h.c===c);
+    if(hidx>=0){s.holes.splice(hidx,1);setEdSt('Hole silindi');}
+    else{s.holes.push({r,c});setEdSt(`Hole (${r},${c}) eklendi`);}
 
   }else if(edMode==='erase'){
     const si=edShapes.findIndex(s=>s.cells.some(cc=>cc.r===r&&cc.c===c));
@@ -966,7 +968,7 @@ function loadLevelData(data){
   edN=data.n||8;
   document.getElementById('board-size').value=edN;
   document.getElementById('slot-count').value=data.slotCount||2;
-  edShapes=(data.shapes||[]).map(s=>({id:edNextId++,color:s.color,cells:s.cells,holeR:s.holeR,holeC:s.holeC}));
+  edShapes=(data.shapes||[]).map(s=>({id:edNextId++,color:s.color,cells:s.cells,holes:s.holes||(s.holeR!==undefined?[{r:s.holeR,c:s.holeC}]:[])}));
   edPegs=data.pegs||[];
   edSlots=(data.slots||[]).map(s=>({items:s.items||[]}));
   slotAddColor={};
@@ -991,7 +993,7 @@ function validateLevel(){
   const errs=[];
   if(edShapes.length===0){errs.push('Board boş!');}
   edShapes.forEach((s,i)=>{
-    if(s.holeR===undefined)errs.push(`Shape #${i+1} (${s.color}): hole yok!`);
+    if(!s.holes||s.holes.length===0)errs.push(`Shape #${i+1} (${s.color}): hole yok!`);
   });
   // Each color must have a peg
   const shapeColors=[...new Set(edShapes.map(s=>s.color))];
@@ -1321,8 +1323,9 @@ function checkPegs(){
     if(peg.shapeId!==null)return;
     playShapes.forEach(shape=>{
       if(shape.collected||shape.color!==peg.color||peg.shapeId!==null)return;
-      if(shape.holeR===peg.boardR&&shape.holeC===peg.boardC){
-        peg.shapeId=shape.id;anyNew=true;
+      const mh=(shape.holes||[]).find(h=>h.r===peg.boardR&&h.c===peg.boardC);
+      if(mh){
+        peg.shapeId=shape.id;peg.activeHole={r:mh.r,c:mh.c};anyNew=true;
         setPlaySt(`✅ ${shape.color.toUpperCase()} peg'e takıldı!`);
       }
     });
@@ -1384,9 +1387,9 @@ function animateConveyer(item,peg,slotIdx){
 }
 
 // Sort cells: farthest from hole first (hole always last)
-function collectOrder(shape){
+function collectOrder(shape,activeHole){
   return shape.cells.map(({r,c})=>({
-    r,c,dist:Math.abs(r-shape.holeR)+Math.abs(c-shape.holeC),
+    r,c,dist:Math.abs(r-activeHole.r)+Math.abs(c-activeHole.c),
   })).sort((a,b)=>b.dist-a.dist||(b.c-a.c)||(b.r-a.r));
 }
 
@@ -1394,7 +1397,7 @@ function doCollect(item,peg,slotIdx,path,pegIdx){
   const shape=playShapes.find(s=>s.id===peg.shapeId);
   if(!shape){finishConveyer(item,slotIdx);return;}
 
-  const order=collectOrder(shape);
+  const order=collectOrder(shape,peg.activeHole||{r:(shape.holes||[])[0]?.r,c:(shape.holes||[])[0]?.c});
   const canTake=item.capacity-item.filled;
   const toTake=Math.min(canTake,order.length);
   const toRemove=order.slice(0,toTake);
