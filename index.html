@@ -1141,12 +1141,15 @@ function doCollect(item,peg,slotIdx,path,pegIdx){
   let ri=0;
   function removeNext(){
     if(ri>=toRemove.length){afterCollect(item,peg,slotIdx,path,pegIdx,toRemove,toKeep,shape);return;}
-    const{r,c}=toRemove[ri];
     const{x:px,y:py}=cellXYP(peg.boardR,peg.boardC);
     convAnim={color:item.color,x:px+PC/2,y:py+PC/2};
+    const{r,c}=toRemove[ri];
     playGrid[r][c]=null;
     shape.cells=shape.cells.filter(cc=>!(cc.r===r&&cc.c===c));
-    item.filled++;renderQueue();drawPlay();ri++;
+    item.filled++;
+    renderQueue();
+    drawPlay();
+    ri++;
     setTimeout(removeNext,110);
   }
   removeNext();
