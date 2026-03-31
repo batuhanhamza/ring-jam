@@ -1095,7 +1095,7 @@ function tryConveyer(){
     if(!active)continue;
     const peg=playPegs.find(p=>p.color===active.color&&p.shapeId!==null);
     if(peg){
-      conveying=true;  // ← buraya taşı
+      conveying=true;
       animateConveyer(active,peg,si);
       return;
     }
@@ -1103,7 +1103,7 @@ function tryConveyer(){
 }
 
 function animateConveyer(item,peg,slotIdx){
-  conveying=true;renderQueue();
+  renderQueue();
   setPlaySt(`🚂 ${item.color.toUpperCase()} conveyer'a bindi!`);
 
   const path=buildPath();
