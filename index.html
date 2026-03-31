@@ -296,32 +296,7 @@ function shapeCells(key,rot){
 // ════════════════════════════════════════════
 // DEFAULT LEVEL
 // ════════════════════════════════════════════
-const DEFAULT_LEVEL={
-  "n":8,"slotCount":2,
-  "shapes":[
-    {"color":"yellow","cells":[{"r":0,"c":2},{"r":0,"c":3},{"r":0,"c":4}],"holes":[{"r":0,"c":3}]},
-    {"color":"yellow","cells":[{"r":1,"c":2},{"r":1,"c":3},{"r":2,"c":2},{"r":2,"c":3}],"holes":[{"r":2,"c":3}]},
-    {"color":"yellow","cells":[{"r":3,"c":3},{"r":3,"c":4}],"holes":[{"r":3,"c":3}]},
-    {"color":"yellow","cells":[{"r":4,"c":2},{"r":5,"c":2},{"r":5,"c":3}],"holes":[{"r":5,"c":2}]},
-    {"color":"blue","cells":[{"r":1,"c":1},{"r":2,"c":1},{"r":3,"c":1},{"r":3,"c":2}],"holes":[{"r":3,"c":1}]},
-    {"color":"blue","cells":[{"r":3,"c":6},{"r":4,"c":5},{"r":4,"c":6}],"holes":[{"r":4,"c":5}]},
-    {"color":"blue","cells":[{"r":5,"c":6},{"r":6,"c":6},{"r":6,"c":7},{"r":7,"c":7}],"holes":[{"r":7,"c":7}]},
-    {"color":"red","cells":[{"r":1,"c":4},{"r":1,"c":5}],"holes":[{"r":1,"c":4}]},
-    {"color":"red","cells":[{"r":4,"c":1},{"r":5,"c":1},{"r":6,"c":1},{"r":6,"c":2}],"holes":[{"r":4,"c":1}]},
-    {"color":"green","cells":[{"r":6,"c":3},{"r":6,"c":4},{"r":7,"c":2},{"r":7,"c":3}],"holes":[{"r":6,"c":4}]},
-    {"color":"red","cells":[{"r":7,"c":4},{"r":7,"c":5}],"holes":[{"r":7,"c":4}]}
-  ],
-  "pegs":[
-    {"color":"red","boardR":0,"boardC":0},
-    {"color":"yellow","boardR":7,"boardC":1},
-    {"color":"blue","boardR":7,"boardC":5},
-    {"color":"green","boardR":0,"boardC":7}
-  ],
-  "slots":[
-    {"items":[{"color":"blue","capacity":2},{"color":"green","capacity":2},{"color":"yellow","capacity":3},{"color":"red","capacity":4},{"color":"yellow","capacity":6}]},
-    {"items":[{"color":"blue","capacity":2},{"color":"red","capacity":4},{"color":"green","capacity":2},{"color":"yellow","capacity":3},{"color":"blue","capacity":7}]}
-  ]
-};
+const DEFAULT_LEVEL={"n":8,"slotCount":2,"shapes":[{"color":"yellow","cells":[{"r":0,"c":2},{"r":0,"c":3},{"r":0,"c":4}],"holes":[{"r":0,"c":3},{"r":0,"c":4},{"r":0,"c":2}]},{"color":"yellow","cells":[{"r":1,"c":2},{"r":1,"c":3},{"r":2,"c":2},{"r":2,"c":3}],"holes":[{"r":2,"c":3},{"r":2,"c":2},{"r":1,"c":2},{"r":1,"c":3}]},{"color":"yellow","cells":[{"r":3,"c":3},{"r":3,"c":4}],"holes":[{"r":3,"c":3},{"r":3,"c":4}]},{"color":"yellow","cells":[{"r":4,"c":2},{"r":5,"c":2},{"r":5,"c":3}],"holes":[{"r":5,"c":2},{"r":5,"c":3},{"r":4,"c":2}]},{"color":"blue","cells":[{"r":1,"c":1},{"r":2,"c":1},{"r":3,"c":1},{"r":3,"c":2}],"holes":[{"r":3,"c":1},{"r":2,"c":1},{"r":1,"c":1},{"r":3,"c":2}]},{"color":"blue","cells":[{"r":3,"c":6},{"r":4,"c":5},{"r":4,"c":6}],"holes":[{"r":4,"c":5},{"r":4,"c":6},{"r":3,"c":6}]},{"color":"blue","cells":[{"r":5,"c":6},{"r":6,"c":6},{"r":6,"c":7},{"r":7,"c":7}],"holes":[{"r":7,"c":7},{"r":6,"c":6},{"r":5,"c":6},{"r":6,"c":7}]},{"color":"red","cells":[{"r":1,"c":4},{"r":1,"c":5}],"holes":[{"r":1,"c":4},{"r":1,"c":5}]},{"color":"red","cells":[{"r":4,"c":1},{"r":5,"c":1},{"r":6,"c":1},{"r":6,"c":2}],"holes":[{"r":4,"c":1},{"r":5,"c":1},{"r":6,"c":1},{"r":6,"c":2}]},{"color":"green","cells":[{"r":6,"c":3},{"r":6,"c":4},{"r":7,"c":2},{"r":7,"c":3}],"holes":[{"r":6,"c":4},{"r":6,"c":3},{"r":7,"c":3},{"r":7,"c":2}]},{"color":"red","cells":[{"r":7,"c":4},{"r":7,"c":5}],"holes":[{"r":7,"c":4},{"r":7,"c":5}]}],"pegs":[{"color":"red","boardR":0,"boardC":0},{"color":"yellow","boardR":7,"boardC":1},{"color":"blue","boardR":7,"boardC":5},{"color":"green","boardR":0,"boardC":7}],"slots":[{"items":[{"color":"blue","capacity":2},{"color":"green","capacity":2},{"color":"yellow","capacity":3},{"color":"red","capacity":4},{"color":"yellow","capacity":6}]},{"items":[{"color":"blue","capacity":2},{"color":"red","capacity":4},{"color":"green","capacity":2},{"color":"yellow","capacity":3},{"color":"blue","capacity":7}]}]};
 
 // ════════════════════════════════════════════
 // EDITOR STATE
@@ -776,7 +751,7 @@ function initPlay(){
   }));
   while(playSlots.length<playSlotCount)playSlots.push({queue:[]});
 
-  conveying=false;drag=null;convAnim=null;
+  conveying=false;drag=null;convAnim=null;convToken=0;
   setupPlayCanvas();drawPlay();renderQueue();
   checkPegs();
 }
@@ -1087,7 +1062,10 @@ function nearPt(path,x,y){
   return best;
 }
 
+let convToken=0;
+
 function tryConveyer(){
+  console.log('tryConveyer called, conveying=',conveying,'token=',convToken);
   if(conveying)return;
   for(let si=0;si<playSlots.length;si++){
     const slot=playSlots[si];
@@ -1096,81 +1074,101 @@ function tryConveyer(){
     const peg=playPegs.find(p=>p.color===active.color&&p.shapeId!==null);
     if(peg){
       conveying=true;
-      animateConveyer(active,peg,si);
+      convToken++;
+      console.log('animateConveyer STARTING token=',convToken);
+      animateConveyer(active,peg,si,convToken);
       return;
     }
   }
 }
 
-function animateConveyer(item,peg,slotIdx){
+function makeSeg(path,startIdx,endIdx){
+  const seg=[],pLen=path.length;
+  let i=startIdx,safety=0;
+  // if same point, return just that point
+  if(startIdx===endIdx){return [startIdx];}
+  while(safety<=pLen){
+    seg.push(i);
+    if(i===endIdx)break;
+    i=(i+1)%pLen;
+    safety++;
+  }
+  return seg;
+}
+
+function animateConveyer(item,peg,slotIdx,token){
   renderQueue();
   setPlaySt(`🚂 ${item.color.toUpperCase()} conveyer'a bindi!`);
-
   const path=buildPath();
   const sz=pWpx();
   const entryIdx=nearPt(path,sz-PCONV/2,sz-PCONV/2);
-  const{x:px,y:py}=cellXYP(peg.boardR,peg.boardC);
-  const pegIdx=nearPt(path,px+PC/2,py+PC/2);
-  const pLen=path.length;
-
-  const seg=[];let i=entryIdx;
-  while(true){seg.push(i);if(i===pegIdx)break;i=(i+1)%pLen;if(seg.length>pLen+5)break;}
-
-  convAnim={color:item.color,...path[entryIdx]};
+  const{x:pgx,y:pgy}=cellXYP(peg.boardR,peg.boardC);
+  const pegIdx=nearPt(path,pgx+PC/2,pgy+PC/2);
+  console.log('pegIdx=',pegIdx,'path[pegIdx]=',path[pegIdx],'actual peg px=',pgx+PC/2,pgy+PC/2);
+  const seg=makeSeg(path,entryIdx,pegIdx);
+  if(!convAnim)convAnim={color:item.color,x:0,y:0};
+  convAnim.color=item.color;
+  convAnim.x=path[entryIdx].x;
+  convAnim.y=path[entryIdx].y;
   let step=0;
-  let goStopped=false;
   function go(){
-    if(goStopped)return;
+    if(convToken!==token){console.log('go KILLED token=',token,'convToken=',convToken);return;}
     if(step>=seg.length){
-      const{x:pgx,y:pgy}=cellXYP(peg.boardR,peg.boardC);
-      convAnim={color:item.color,x:pgx+PC/2,y:pgy+PC/2};
+      convAnim.x=pgx+PC/2;convAnim.y=pgy+PC/2;
       drawPlay();
-      goStopped=true;
-      doCollect(item,peg,slotIdx,path,pegIdx);
+      doCollect(item,peg,slotIdx,path,pegIdx,token);
       return;
     }
-    Object.assign(convAnim,path[seg[step]]);drawPlay();step++;
+    const pt=path[seg[step]];
+    convAnim.x=pt.x;convAnim.y=pt.y;
+    drawPlay();step++;
     setTimeout(go,9);
   }
   go();
 }
 
-// Sort cells: farthest from hole first (hole always last)
 function collectOrder(shape,activeHole){
+  const h=activeHole||(shape.holes||[])[0]||shape.cells[0];
   return shape.cells.map(({r,c})=>({
-    r,c,dist:Math.abs(r-activeHole.r)+Math.abs(c-activeHole.c),
+    r,c,dist:Math.abs(r-h.r)+Math.abs(c-h.c),
   })).sort((a,b)=>b.dist-a.dist||(b.c-a.c)||(b.r-a.r));
 }
 
-function doCollect(item,peg,slotIdx,path,pegIdx){
+function doCollect(item,peg,slotIdx,path,pegIdx,token){
+  if(convToken!==token)return;
   const shape=playShapes.find(s=>s.id===peg.shapeId);
   if(!shape){finishConveyer(item,slotIdx);return;}
-
-  const order=collectOrder(shape,peg.activeHole||{r:(shape.holes||[])[0]?.r,c:(shape.holes||[])[0]?.c});
+  const pegShapeId=peg.shapeId;
+  peg.shapeId=null; // hemen kilitle — çift collection'ı önle
+  const order=collectOrder(shape,peg.activeHole);
   const canTake=item.capacity-item.filled;
-  const toTake=Math.min(canTake,order.length);
-  const toRemove=order.slice(0,toTake);
-  const toKeep=order.slice(toTake);
-
+  const toRemove=order.slice(0,Math.min(canTake,order.length));
+  const toKeep=order.slice(toRemove.length);
+  const{x:pgx,y:pgy}=cellXYP(peg.boardR,peg.boardC);
   let ri=0;
+  let removing=true;
   function removeNext(){
-    if(ri>=toRemove.length){afterCollect(item,peg,slotIdx,path,pegIdx,toRemove,toKeep,shape);return;}
-    console.log('removeNext ri=',ri,'conveying=',conveying);
-    const{x:px,y:py}=cellXYP(peg.boardR,peg.boardC);
-    convAnim={color:item.color,x:px+PC/2,y:py+PC/2};
+    if(convToken!==token)return;
+    if(ri>=toRemove.length){
+      removing=false;
+      // tüm removeNext adımları bitti, şimdi afterCollect başlasın
+      const delay=110; // son adımdan sonra bir tam cycle bekle
+      setTimeout(()=>afterCollect(item,peg,slotIdx,path,pegIdx,toRemove,toKeep,shape,token),delay);
+      return;
+    }
+    convAnim.x=pgx+PC/2;convAnim.y=pgy+PC/2;
     const{r,c}=toRemove[ri];
     playGrid[r][c]=null;
     shape.cells=shape.cells.filter(cc=>!(cc.r===r&&cc.c===c));
-    item.filled++;
-    renderQueue();
-    drawPlay();
-    ri++;
+    shape.holes=(shape.holes||[]).filter(h=>!(h.r===r&&h.c===c));
+    item.filled++;renderQueue();drawPlay();ri++;
     setTimeout(removeNext,110);
   }
   removeNext();
 }
 
-function afterCollect(item,peg,slotIdx,path,pegIdx,removed,kept,shape){
+function afterCollect(item,peg,slotIdx,path,pegIdx,removed,kept,shape,token){
+  if(convToken!==token)return;
   peg.shapeId=null;
   if(kept.length===0){
     shape.collected=true;shape.cells=[];
@@ -1181,27 +1179,33 @@ function afterCollect(item,peg,slotIdx,path,pegIdx,removed,kept,shape){
     shape.cells.forEach(({r,c})=>{playGrid[r][c]=shape.id;});
   }
   setPlaySt(`📦 ${removed.length} hücre toplandı (${item.filled}/${item.capacity})`);
+  drawPlay();
 
-  // Return path
-  const pLen=path.length,sz=pWpx();
+  // Kısa bekleme — removeNext'in tüm adımlarının bitmesini garantile
+  if(convToken!==token)return;
+  const sz=pWpx();
   const exitIdx=nearPt(path,sz-PCONV/2,sz-PCONV/2);
-  const seg=[];let i=pegIdx;
-  while(true){seg.push(i);if(i===exitIdx)break;i=(i+1)%pLen;if(seg.length>pLen+5)break;}
-
-  const{x:pgx,y:pgy}=cellXYP(peg.boardR,peg.boardC);
-  convAnim={color:item.color,x:pgx+PC/2,y:pgy+PC/2};
+  // goBack path'ı: pegIdx'ten değil, entryIdx'e en yakın noktadan başla
+  // Çünkü peg board içinde, path board dışında — doğrudan entry'e git
+  const seg=makeSeg(path,pegIdx,exitIdx);
   let step=0;
   function goBack(){
+    if(convToken!==token)return;
     if(step>=seg.length){
-      convAnim=null;
-      conveying=false;
+      convAnim=null;conveying=false;
       finishConveyer(item,slotIdx);
       return;
     }
-    Object.assign(convAnim,path[seg[step]]);drawPlay();step++;
+    const pt=path[seg[step]];
+    convAnim.x=pt.x;convAnim.y=pt.y;
+    drawPlay();step++;
     setTimeout(goBack,9);
   }
-  goBack();
+  // İlk frame'de peg koordinatını koy, sonra path'a geç
+  const{x:px2,y:py2}=cellXYP(peg.boardR,peg.boardC);
+  convAnim.x=px2+PC/2;convAnim.y=py2+PC/2;
+  drawPlay();
+  setTimeout(goBack,110);
 }
 
 function finishConveyer(item,slotIdx){
@@ -1214,7 +1218,7 @@ function finishConveyer(item,slotIdx){
     setPlaySt(`↩️ ${item.color.toUpperCase()} döndü (${item.filled}/${item.capacity})`);
   }
   drawPlay();renderQueue();checkWin();
-  setTimeout(()=>{checkPegs();setTimeout(tryConveyer,100);},400);
+  setTimeout(()=>{checkPegs();tryConveyer();},300);
 }
 
 function checkWin(){
