@@ -296,7 +296,93 @@ function shapeCells(key,rot){
 // ════════════════════════════════════════════
 // DEFAULT LEVEL
 // ════════════════════════════════════════════
-const DEFAULT_LEVEL={"n":8,"slotCount":2,"shapes":[{"color":"yellow","cells":[{"r":0,"c":2},{"r":0,"c":3},{"r":0,"c":4}],"holes":[{"r":0,"c":3},{"r":0,"c":4},{"r":0,"c":2}]},{"color":"yellow","cells":[{"r":1,"c":2},{"r":1,"c":3},{"r":2,"c":2},{"r":2,"c":3}],"holes":[{"r":2,"c":3},{"r":2,"c":2},{"r":1,"c":2},{"r":1,"c":3}]},{"color":"yellow","cells":[{"r":3,"c":3},{"r":3,"c":4}],"holes":[{"r":3,"c":3},{"r":3,"c":4}]},{"color":"yellow","cells":[{"r":4,"c":2},{"r":5,"c":2},{"r":5,"c":3}],"holes":[{"r":5,"c":2},{"r":5,"c":3},{"r":4,"c":2}]},{"color":"blue","cells":[{"r":1,"c":1},{"r":2,"c":1},{"r":3,"c":1},{"r":3,"c":2}],"holes":[{"r":3,"c":1},{"r":2,"c":1},{"r":1,"c":1},{"r":3,"c":2}]},{"color":"blue","cells":[{"r":3,"c":6},{"r":4,"c":5},{"r":4,"c":6}],"holes":[{"r":4,"c":5},{"r":4,"c":6},{"r":3,"c":6}]},{"color":"blue","cells":[{"r":5,"c":6},{"r":6,"c":6},{"r":6,"c":7},{"r":7,"c":7}],"holes":[{"r":7,"c":7},{"r":6,"c":6},{"r":5,"c":6},{"r":6,"c":7}]},{"color":"red","cells":[{"r":1,"c":4},{"r":1,"c":5}],"holes":[{"r":1,"c":4},{"r":1,"c":5}]},{"color":"red","cells":[{"r":4,"c":1},{"r":5,"c":1},{"r":6,"c":1},{"r":6,"c":2}],"holes":[{"r":4,"c":1},{"r":5,"c":1},{"r":6,"c":1},{"r":6,"c":2}]},{"color":"green","cells":[{"r":6,"c":3},{"r":6,"c":4},{"r":7,"c":2},{"r":7,"c":3}],"holes":[{"r":6,"c":4},{"r":6,"c":3},{"r":7,"c":3},{"r":7,"c":2}]},{"color":"red","cells":[{"r":7,"c":4},{"r":7,"c":5}],"holes":[{"r":7,"c":4},{"r":7,"c":5}]}],"pegs":[{"color":"red","boardR":0,"boardC":0},{"color":"yellow","boardR":7,"boardC":1},{"color":"blue","boardR":7,"boardC":5},{"color":"green","boardR":0,"boardC":7}],"slots":[{"items":[{"color":"blue","capacity":2},{"color":"green","capacity":2},{"color":"yellow","capacity":3},{"color":"red","capacity":4},{"color":"yellow","capacity":6}]},{"items":[{"color":"blue","capacity":2},{"color":"red","capacity":4},{"color":"green","capacity":2},{"color":"yellow","capacity":3},{"color":"blue","capacity":7}]}]};
+const DEFAULT_LEVEL=
+  {
+  "n": 4,
+  "slotCount": 1,
+  "shapes": [
+    {
+      "color": "red",
+      "cells": [
+        {
+          "r": 0,
+          "c": 3
+        },
+        {
+          "r": 1,
+          "c": 3
+        },
+        {
+          "r": 2,
+          "c": 3
+        },
+        {
+          "r": 1,
+          "c": 2
+        }
+      ],
+      "holes": [
+        {
+          "r": 0,
+          "c": 3
+        }
+      ]
+    },
+    {
+      "color": "blue",
+      "cells": [
+        {
+          "r": 1,
+          "c": 1
+        },
+        {
+          "r": 2,
+          "c": 1
+        },
+        {
+          "r": 2,
+          "c": 2
+        }
+      ],
+      "holes": [
+        {
+          "r": 1,
+          "c": 1
+        }
+      ]
+    }
+  ],
+  "pegs": [
+    {
+      "color": "red",
+      "boardR": 0,
+      "boardC": 1
+    },
+    {
+      "color": "blue",
+      "boardR": 0,
+      "boardC": 2
+    }
+  ],
+  "slots": [
+    {
+      "items": [
+        {
+          "color": "red",
+          "capacity": 2
+        },
+        {
+          "color": "blue",
+          "capacity": 3
+        },
+        {
+          "color": "red",
+          "capacity": 2
+        }
+      ]
+    }
+  ]
+};
 
 // ════════════════════════════════════════════
 // EDITOR STATE
